@@ -1,11 +1,16 @@
-# Environment Configuration
+# General Variables
 variable "environment" {
-  description = "Environment name"
+  description = "Environment name (e.g., dev, staging, prod)"
   type        = string
-  default     = "prod"
 }
 
-# VPC Configuration
+variable "project_name" {
+  description = "Name of the project"
+  type        = string
+  default     = "n8n"
+}
+
+# VPC Variables
 variable "vpc_cidr" {
   description = "CIDR block for VPC"
   type        = string
@@ -36,7 +41,13 @@ variable "enable_nat_gateway" {
   default     = true
 }
 
-# Database Configuration
+# Database Variables
+variable "db_engine_version" {
+  description = "PostgreSQL engine version"
+  type        = string
+  default     = "15.4"
+}
+
 variable "db_instance_class" {
   description = "RDS instance class"
   type        = string
@@ -49,10 +60,52 @@ variable "db_allocated_storage" {
   default     = 20
 }
 
+variable "db_max_allocated_storage" {
+  description = "Maximum allocated storage for RDS autoscaling"
+  type        = number
+  default     = 100
+}
+
+variable "db_name" {
+  description = "Database name"
+  type        = string
+  default     = "n8n"
+}
+
+variable "db_username" {
+  description = "Database username"
+  type        = string
+  default     = "n8n_user"
+}
+
 variable "db_password" {
   description = "Database password"
   type        = string
   sensitive   = true
+}
+
+variable "db_backup_retention_period" {
+  description = "Database backup retention period in days"
+  type        = number
+  default     = 7
+}
+
+variable "db_backup_window" {
+  description = "Database backup window"
+  type        = string
+  default     = "03:00-04:00"
+}
+
+variable "db_maintenance_window" {
+  description = "Database maintenance window"
+  type        = string
+  default     = "sun:04:00-sun:05:00"
+}
+
+variable "db_skip_final_snapshot" {
+  description = "Skip final snapshot when deleting database"
+  type        = bool
+  default     = false
 }
 
 variable "db_deletion_protection" {
@@ -61,7 +114,13 @@ variable "db_deletion_protection" {
   default     = true
 }
 
-# n8n Configuration
+# ECS Variables
+variable "n8n_image" {
+  description = "n8n Docker image"
+  type        = string
+  default     = "n8nio/n8n:latest"
+}
+
 variable "n8n_cpu" {
   description = "CPU units for n8n task"
   type        = number
@@ -80,20 +139,13 @@ variable "n8n_desired_count" {
   default     = 1
 }
 
-variable "n8n_encryption_key" {
-  description = "Encryption key for n8n"
-  type        = string
-  sensitive   = true
+variable "n8n_port" {
+  description = "Port for n8n application"
+  type        = number
+  default     = 5678
 }
 
-# Security Configuration
-variable "allowed_cidr_blocks" {
-  description = "CIDR blocks allowed to access n8n"
-  type        = list(string)
-  default     = ["0.0.0.0/0"]
-}
-
-# Optional SSL Configuration
+# Load Balancer Variables
 variable "certificate_arn" {
   description = "SSL certificate ARN for HTTPS"
   type        = string
@@ -101,12 +153,37 @@ variable "certificate_arn" {
 }
 
 variable "domain_name" {
-  description = "Domain name for n8n"
+  description = "Domain name for n8n (optional)"
   type        = string
   default     = ""
 }
 
-# Optional Basic Auth Configuration
+# Security Variables
+variable "allowed_cidr_blocks" {
+  description = "CIDR blocks allowed to access n8n"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+# n8n Configuration Variables
+variable "n8n_encryption_key" {
+  description = "Encryption key for n8n"
+  type        = string
+  sensitive   = true
+}
+
+variable "n8n_webhook_url" {
+  description = "Webhook URL for n8n"
+  type        = string
+  default     = ""
+}
+
+variable "n8n_timezone" {
+  description = "Timezone for n8n"
+  type        = string
+  default     = "Asia/Singapore"
+}
+
 variable "n8n_basic_auth_active" {
   description = "Enable basic authentication for n8n"
   type        = bool

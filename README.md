@@ -47,28 +47,34 @@ This creates:
 - **S3 Bucket**: `n8n-tf-state` - Stores Terraform state files
 - **DynamoDB Table**: `n8n-tf-locks` - Handles state locking
 
-### 2. Configure Backend (After Bootstrap)
+### 2. Initialize Backend with Dynamic Configuration
 
-After the bootstrap is complete, configure the main Terraform configuration to use the remote state:
+After the bootstrap is complete, use the automated script to configure and initialize the backend:
 
-```hcl
-# Add to main.tf or create backend.tf
-terraform {
-  backend "s3" {
-    bucket         = "n8n-tf-state"
-    key            = "n8n/terraform.tfstate"
-    region         = "ap-southeast-1"
-    dynamodb_table = "n8n-tf-locks"
-    profile        = "n8n"
-  }
-}
+```bash
+# Automatically generates backend config from bootstrap outputs and initializes Terraform
+./scripts/init-with-backend.sh prod
+```
+
+This script will:
+- Extract the S3 bucket name and DynamoDB table from bootstrap outputs
+- Generate a `backend.hcl` configuration file
+- Initialize Terraform with the correct backend settings
+
+**Alternative manual steps:**
+```bash
+# Generate backend configuration
+./scripts/generate-backend-config.sh prod
+
+# Initialize manually
+cd envs/prod
+terraform init -backend-config=backend.hcl
 ```
 
 ### 3. Deploy Main Infrastructure
 
 ```bash
-cd ..  # Back to project root
-terraform init
+cd envs/prod  # Navigate to your environment
 terraform plan
 terraform apply
 ```

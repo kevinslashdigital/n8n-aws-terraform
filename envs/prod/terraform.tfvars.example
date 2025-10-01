@@ -1,0 +1,33 @@
+# Environment Configuration
+environment = "prod"
+
+# VPC Configuration
+vpc_cidr               = "10.0.0.0/16"
+availability_zones     = ["ap-southeast-1a", "ap-southeast-1b"]
+public_subnet_cidrs    = ["10.0.1.0/24", "10.0.2.0/24"]
+private_subnet_cidrs   = ["10.0.10.0/24", "10.0.20.0/24"]
+enable_nat_gateway     = true
+
+# Database Configuration
+db_instance_class      = "db.t3.micro"  # Use db.t3.small or larger for production
+db_allocated_storage   = 20
+db_password           = "your-secure-database-password"
+db_deletion_protection = true
+
+# n8n Configuration
+n8n_cpu               = 512   # 256, 512, 1024, 2048, 4096
+n8n_memory            = 1024  # Must be compatible with CPU
+n8n_desired_count     = 1     # Number of n8n instances
+n8n_encryption_key    = "your-32-character-encryption-key"
+
+# Security Configuration
+allowed_cidr_blocks   = ["0.0.0.0/0"]  # Restrict this for production
+
+# Optional: SSL Certificate and Domain
+# certificate_arn = "arn:aws:acm:ap-southeast-1:123456789012:certificate/12345678-1234-1234-1234-123456789012"
+# domain_name     = "n8n.yourdomain.com"
+
+# Optional: Basic Authentication
+# n8n_basic_auth_active   = true
+# n8n_basic_auth_user     = "admin"
+# n8n_basic_auth_password = "your-basic-auth-password"
