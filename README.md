@@ -77,6 +77,9 @@ terraform init -backend-config=backend.hcl
 cd envs/prod  # Navigate to your environment
 terraform plan -var="profile=xx-profile"
 terraform apply -var="profile=xx-profile"
+
+
+make plan AWS_PROFILE=chaseflow ENV=prod
 ```
 
 ### 4. Update Backend Configuration

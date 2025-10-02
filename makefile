@@ -7,10 +7,10 @@ init:
 	cd envs/$(ENV) && terraform init -backend-config=backend.hcl
 
 plan:
-	cd envs/$(ENV) && terraform plan -var="environment=$(ENV)" -var="profile=$(AWS_PROFILE)"
+	cd envs/$(ENV) && terraform plan -var="environment=$(ENV)" -var-file="${VARS_FILE}"  -var="profile=$(AWS_PROFILE)"
 
 apply:
-	cd envs/$(ENV) && terraform apply -auto-approve -var="environment=$(ENV)" -var="profile=$(AWS_PROFILE)"
+	cd envs/$(ENV) && terraform apply -auto-approve -var="environment=$(ENV)" -var-file="${VARS_FILE}"  -var="profile=$(AWS_PROFILE)"
 
 destroy:
 	cd envs/$(ENV) && terraform destroy -auto-approve -var="environment=$(ENV)" -var="profile=$(AWS_PROFILE)"

@@ -48,30 +48,79 @@ variable "enable_nat_gateway" {
   default     = true
 }
 
-# # Database Configuration
-# variable "db_instance_class" {
-#   description = "RDS instance class"
-#   type        = string
-#   default     = "db.t3.micro"
-# }
+# Database Variables
+variable "db_engine_version" {
+  description = "PostgreSQL engine version"
+  type        = string
+  default     = "15.4"
+}
 
-# variable "db_allocated_storage" {
-#   description = "Initial allocated storage for RDS"
-#   type        = number
-#   default     = 20
-# }
+variable "db_instance_class" {
+  description = "RDS instance class"
+  type        = string
+  default     = "db.t3.micro"
+}
 
-# variable "db_password" {
-#   description = "Database password"
-#   type        = string
-#   sensitive   = true
-# }
+variable "db_allocated_storage" {
+  description = "Initial allocated storage for RDS"
+  type        = number
+  default     = 20
+}
 
-# variable "db_deletion_protection" {
-#   description = "Enable deletion protection for database"
-#   type        = bool
-#   default     = true
-# }
+variable "db_max_allocated_storage" {
+  description = "Maximum allocated storage for RDS autoscaling"
+  type        = number
+  default     = 100
+}
+
+variable "db_name" {
+  description = "Database name"
+  type        = string
+  default     = "n8n"
+}
+
+variable "db_username" {
+  description = "Database username"
+  type        = string
+  default     = "n8n_user"
+}
+
+variable "db_password" {
+  description = "Database password"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_backup_retention_period" {
+  description = "Database backup retention period in days"
+  type        = number
+  default     = 7
+}
+
+variable "db_backup_window" {
+  description = "Database backup window"
+  type        = string
+  default     = "03:00-04:00"
+}
+
+variable "db_maintenance_window" {
+  description = "Database maintenance window"
+  type        = string
+  default     = "sun:04:00-sun:05:00"
+}
+
+variable "db_skip_final_snapshot" {
+  description = "Skip final snapshot when deleting database"
+  type        = bool
+  default     = false
+}
+
+variable "db_deletion_protection" {
+  description = "Enable deletion protection for database"
+  type        = bool
+  default     = true
+}
+
 
 # # n8n Configuration
 # variable "n8n_cpu" {
