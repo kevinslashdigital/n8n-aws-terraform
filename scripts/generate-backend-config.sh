@@ -36,14 +36,8 @@ if [ -z "$BUCKET_NAME" ]; then
     exit 1
 fi
 
-LOCK_TABLE=$(terraform output -raw lock_table_name 2>/dev/null)
-if [ -z "$LOCK_TABLE" ]; then
-    echo "❌ Could not get lock table name from bootstrap state"
-    exit 1
-fi
 
 echo "✅ Bucket: $BUCKET_NAME"
-echo "✅ Lock Table: $LOCK_TABLE"
 
 # Generate backend.hcl file
 BACKEND_CONFIG_FILE="$ENV_DIR/backend.hcl"
@@ -53,11 +47,9 @@ echo "📝 Generating $BACKEND_CONFIG_FILE..."
 cat > "$BACKEND_CONFIG_FILE" << EOF
 # Generated from bootstrap outputs
 # Bucket: $BUCKET_NAME
-# Lock Table: $LOCK_TABLE
 # Generated at: $(date)
 
 bucket         = "$BUCKET_NAME"
-dynamodb_table = "$LOCK_TABLE"
 EOF
 
 echo "✅ Backend configuration generated successfully!"

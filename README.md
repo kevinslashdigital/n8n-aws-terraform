@@ -75,8 +75,15 @@ terraform init -backend-config=backend.hcl
 
 ```bash
 cd envs/prod  # Navigate to your environment
-terraform plan
-terraform apply
+terraform plan -var="profile=xx-profile"
+terraform apply -var="profile=xx-profile"
+```
+
+### 4. Update Backend Configuration
+
+```bash
+# Update backend configuration
+cd envs/prod && terraform init -reconfigure -backend-config=backend.hcl
 ```
 
 ## Configuration

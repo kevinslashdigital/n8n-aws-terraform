@@ -28,6 +28,7 @@ terraform.rc
 # Terraform directories
 .terraform/
 .terraform.lock.hcl
+backend.hcl
 
 # Environment variables
 .env
