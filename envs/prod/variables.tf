@@ -140,7 +140,7 @@ variable "n8n_basic_auth_password" {
 variable "db_engine_version" {
   description = "PostgreSQL engine version"
   type        = string
-  default     = "15.4"
+  default     = "16.3"
 }
 
 variable "db_instance_class" {

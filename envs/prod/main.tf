@@ -55,7 +55,7 @@ module "ecs" {
     },
     {
       name  = "DB_POSTGRESDB_HOST"
-      value = module.database.db_instance_endpoint
+      value = split(":", module.database.db_instance_endpoint)[0]
     },
     {
       name  = "DB_POSTGRESDB_PORT"
@@ -68,6 +68,22 @@ module "ecs" {
     {
       name  = "DB_POSTGRESDB_USER"
       value = var.db_username
+    },
+    {
+      name  = "DB_POSTGRESDB_SSL_CA"
+      value = ""
+    },
+    {
+      name  = "DB_POSTGRESDB_SSL_CERT"
+      value = ""
+    },
+    {
+      name  = "DB_POSTGRESDB_SSL_KEY"
+      value = ""
+    },
+    {
+      name  = "DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED"
+      value = "false"
     },
     {
       name  = "N8N_PORT"
