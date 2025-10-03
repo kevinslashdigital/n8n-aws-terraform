@@ -48,6 +48,94 @@ variable "enable_nat_gateway" {
   default     = true
 }
 
+# Load Balancer Variables
+variable "certificate_arn" {
+  description = "SSL certificate ARN for HTTPS"
+  type        = string
+  default     = ""
+}
+
+variable "domain_name" {
+  description = "Domain name for n8n (optional)"
+  type        = string
+  default     = ""
+}
+
+# Security Variables
+variable "allowed_cidr_blocks" {
+  description = "CIDR blocks allowed to access n8n"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+# ECS Variables
+variable "n8n_image" {
+  description = "n8n Docker image"
+  type        = string
+  default     = "n8nio/n8n:latest"
+}
+
+variable "n8n_cpu" {
+  description = "CPU units for n8n task"
+  type        = number
+  default     = 512
+}
+
+variable "n8n_memory" {
+  description = "Memory for n8n task"
+  type        = number
+  default     = 1024
+}
+
+variable "n8n_desired_count" {
+  description = "Desired number of n8n tasks"
+  type        = number
+  default     = 1
+}
+
+variable "n8n_port" {
+  description = "Port for n8n application"
+  type        = number
+  default     = 5678
+}
+# n8n Configuration Variables
+variable "n8n_encryption_key" {
+  description = "Encryption key for n8n"
+  type        = string
+  sensitive   = true
+}
+
+variable "n8n_webhook_url" {
+  description = "Webhook URL for n8n"
+  type        = string
+  default     = ""
+}
+
+variable "n8n_timezone" {
+  description = "Timezone for n8n"
+  type        = string
+  default     = "Asia/Singapore"
+}
+
+variable "n8n_basic_auth_active" {
+  description = "Enable basic authentication for n8n"
+  type        = bool
+  default     = false
+}
+
+variable "n8n_basic_auth_user" {
+  description = "Basic auth username for n8n"
+  type        = string
+  default     = ""
+}
+
+variable "n8n_basic_auth_password" {
+  description = "Basic auth password for n8n"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
 # Database Variables
 variable "db_engine_version" {
   description = "PostgreSQL engine version"
@@ -121,68 +209,3 @@ variable "db_deletion_protection" {
   default     = true
 }
 
-
-# # n8n Configuration
-# variable "n8n_cpu" {
-#   description = "CPU units for n8n task"
-#   type        = number
-#   default     = 512
-# }
-
-# variable "n8n_memory" {
-#   description = "Memory for n8n task"
-#   type        = number
-#   default     = 1024
-# }
-
-# variable "n8n_desired_count" {
-#   description = "Desired number of n8n tasks"
-#   type        = number
-#   default     = 1
-# }
-
-# variable "n8n_encryption_key" {
-#   description = "Encryption key for n8n"
-#   type        = string
-#   sensitive   = true
-# }
-
-# # Security Configuration
-# variable "allowed_cidr_blocks" {
-#   description = "CIDR blocks allowed to access n8n"
-#   type        = list(string)
-#   default     = ["0.0.0.0/0"]
-# }
-
-# # Optional SSL Configuration
-# variable "certificate_arn" {
-#   description = "SSL certificate ARN for HTTPS"
-#   type        = string
-#   default     = ""
-# }
-
-# variable "domain_name" {
-#   description = "Domain name for n8n"
-#   type        = string
-#   default     = ""
-# }
-
-# # Optional Basic Auth Configuration
-# variable "n8n_basic_auth_active" {
-#   description = "Enable basic authentication for n8n"
-#   type        = bool
-#   default     = false
-# }
-
-# variable "n8n_basic_auth_user" {
-#   description = "Basic auth username for n8n"
-#   type        = string
-#   default     = ""
-# }
-
-# variable "n8n_basic_auth_password" {
-#   description = "Basic auth password for n8n"
-#   type        = string
-#   sensitive   = true
-#   default     = ""
-# }
