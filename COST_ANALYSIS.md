@@ -5,12 +5,30 @@ This document provides a detailed cost breakdown and optimization strategies for
 ## Current Infrastructure Overview
 
 The n8n deployment consists of:
+
 - **VPC** with public/private subnets across 2 AZs
 - **ECS Fargate** service (0.5 vCPU, 1GB RAM)
 - **Application Load Balancer** with SSL termination
 - **RDS PostgreSQL** (db.t3.micro, 20GB storage)
 - **NAT Gateways** for high availability (2 AZs)
 - **CloudWatch** logging and monitoring
+
+> **Note**: This architecture design for high availability and fault tolerance.
+>
+> ### High Availability
+>
+> - If one AZ fails, the other AZ continues working  
+> - No single point of failure for internet connectivity  
+>
+> ### AWS Best Practices
+>
+> - Follows AWS Well-Architected Framework  
+> - Recommended for production workloads  
+>
+> ### Fault Tolerance
+>
+> - If NAT Gateway 1 fails, only resources in **AZ-a** are affected  
+> - Resources in **AZ-b** continue operating normally  
 
 ## Monthly Cost Breakdown
 
@@ -70,7 +88,8 @@ The n8n deployment consists of:
 ### 🎯 High Impact Optimizations
 
 #### 1. Single AZ Deployment (Development)
-**Savings: ~$50/month (31% reduction)**
+
+##### Savings: ~$50/month (31% reduction)
 
 ```hcl
 # In variables.tf
@@ -84,12 +103,14 @@ variable "single_nat_gateway" {
 ```
 
 **Impact:**
+
 - Reduces from 2 to 1 NAT Gateway: -$43.90/month
 - Reduces from 2 to 1 Elastic IP: -$3.72/month
 - **Total Savings: $47.62/month**
 
 #### 2. ECS Resource Optimization
-**Savings: ~$8/month (5% reduction)**
+
+##### Savings: ~$8/month (5% reduction)
 
 ```hcl
 # Reduce ECS resources for development
@@ -103,6 +124,7 @@ variable "n8n_memory" {
 ```
 
 **Impact:**
+
 - CPU cost reduction: -$7.53/month
 - Memory cost reduction: -$1.66/month
 - **Total Savings: $9.19/month**
@@ -110,7 +132,8 @@ variable "n8n_memory" {
 ### 🎯 Medium Impact Optimizations
 
 #### 3. Database Optimization
-**Savings: ~$3/month (2% reduction)**
+
+##### Savings: ~$3/month (2% reduction)
 
 ```hcl
 # For development environments
@@ -124,12 +147,14 @@ variable "db_allocated_storage" {
 ```
 
 **Impact:**
+
 - Backup storage: -$1.62/month
 - Storage cost: -$1.15/month
 - **Total Savings: $2.77/month**
 
 #### 4. CloudWatch Log Retention
-**Savings: ~$1/month (1% reduction)**
+
+##### Savings: ~$1/month (1% reduction)
 
 ```hcl
 # Reduce log retention for development
@@ -141,13 +166,15 @@ resource "aws_cloudwatch_log_group" "main" {
 ### 🎯 Alternative Architectures
 
 #### Option A: Network Load Balancer
-**Savings: ~$15/month**
+
+##### Savings: ~$15/month
 
 - Replace ALB with NLB if SSL termination isn't required at load balancer level
 - NLB costs ~$16/month vs ALB ~$22/month
 
 #### Option B: VPC Endpoints (Advanced)
-**Savings: ~$20/month**
+
+##### Savings: ~$20/month
 
 - Add VPC endpoints for S3, ECR, CloudWatch
 - Reduce NAT Gateway data processing costs
@@ -156,7 +183,9 @@ resource "aws_cloudwatch_log_group" "main" {
 ## Environment-Specific Cost Estimates
 
 ### Development Environment
-**Optimized Configuration:**
+
+#### Optimized Configuration
+
 - Single AZ deployment
 - Reduced ECS resources (256 CPU, 512MB)
 - Minimal backup retention
@@ -171,7 +200,9 @@ resource "aws_cloudwatch_log_group" "main" {
 | **TOTAL** | **$88.50** |
 
 ### Staging Environment
-**Balanced Configuration:**
+
+#### Balanced Configuration
+
 - Single AZ with higher resources
 - Standard backup retention
 - Production-like configuration
@@ -185,7 +216,9 @@ resource "aws_cloudwatch_log_group" "main" {
 | **TOTAL** | **$102.00** |
 
 ### Production Environment
-**Current Configuration:**
+
+#### Current Configuration
+
 - Multi-AZ for high availability
 - Full redundancy and backup
 - Enhanced monitoring
@@ -243,15 +276,18 @@ aws ce get-cost-and-usage \
 ## Annual Cost Projections
 
 ### Current Production Setup
+
 - **Monthly**: $161.76
 - **Annual**: $1,941.12
 
 ### Optimized Development Setup
+
 - **Monthly**: $88.50
 - **Annual**: $1,062.00
 - **Annual Savings**: $879.12 (45% reduction)
 
 ### Hybrid Approach (Prod + Dev)
+
 - **Production**: $161.76/month
 - **Development**: $88.50/month
 - **Total**: $250.26/month
@@ -260,16 +296,19 @@ aws ce get-cost-and-usage \
 ## Recommendations
 
 ### Immediate Actions (Next 30 days)
+
 1. **Implement single AZ for development** - Save $50/month
 2. **Right-size ECS resources** - Save $9/month
 3. **Set up cost alerts** - Prevent cost overruns
 
 ### Medium-term Actions (Next 90 days)
+
 1. **Evaluate NLB vs ALB** - Potential $15/month savings
 2. **Implement VPC endpoints** - Reduce data transfer costs
 3. **Consider Reserved Instances** - For long-term RDS usage
 
 ### Long-term Strategy
+
 1. **Multi-environment optimization** - Separate dev/staging/prod costs
 2. **Automated scaling policies** - Reduce costs during off-hours
 3. **Regular cost reviews** - Monthly optimization assessments
