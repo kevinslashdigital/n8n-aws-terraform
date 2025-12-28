@@ -72,7 +72,6 @@ cd ..
 
 ```bash
 ./scripts/init-with-backend.sh prod
-cd envs/prod
 # Automatically generates backend config from bootstrap outputs and initializes Terraform
 make init ENV=prod
 ```
@@ -94,9 +93,9 @@ make apply AWS_PROFILE=your-aws-profile ENV=prod
 After deployment, you can access n8n via:
 
 ```bash
+cd envs/prod
 # Get the access URL
 terraform output n8n_url
-
 # Or use the ALB directly
 terraform output alb_dns_name
 ```
