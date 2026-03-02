@@ -1,0 +1,35 @@
+# Development Environment Configuration
+environment = "dev"
+
+# VPC Configuration - Single AZ for cost optimization
+vpc_cidr               = "10.1.0.0/16"
+availability_zones     = ["ap-southeast-1a"]  # Single AZ
+public_subnet_cidrs    = ["10.1.1.0/24"]      # Single public subnet
+private_subnet_cidrs   = ["10.1.10.0/24"]     # Single private subnet (not used)
+enable_nat_gateway     = false                # Disabled for cost savings
+
+# Database Configuration - Optimized for dev
+db_instance_class      = "db.t3.micro"
+db_allocated_storage   = 10                   # Reduced storage
+db_backup_retention_period = 1               # Minimal backup retention
+db_password           = "your-dev-database-password"
+db_deletion_protection = false               # Disabled for easy cleanup
+db_skip_final_snapshot = true                # Skip final snapshot
+
+# n8n Configuration - Reduced resources
+n8n_cpu               = 256   # Reduced from 512
+n8n_memory            = 512   # Reduced from 1024
+n8n_desired_count     = 1
+n8n_encryption_key    = "your-32-character-dev-encryption-key"
+
+# Security Configuration - Basic auth enabled for dev
+n8n_basic_auth_active   = true
+n8n_basic_auth_user     = "admin"
+n8n_basic_auth_password = "your-dev-basic-auth-password"
+
+# Security - More permissive for dev (restrict as needed)
+allowed_cidr_blocks   = ["0.0.0.0/0"]
+
+# No SSL certificate or custom domain for dev
+# certificate_arn = ""
+# domain_name     = ""
